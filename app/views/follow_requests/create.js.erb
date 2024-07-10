@@ -1,1 +1,3 @@
-document.getElementById("<%= dom_id(@recipient) %>_follow").innerHTML = "<%= j render 'follow_requests/follow_unfollow', sender: current_user, recipient: @recipient %>";
+document.querySelectorAll('.follow-container[data-user-id="<%= @recipient.id %>"]').forEach(function(container) {
+  container.outerHTML = '<%= j render "follow_requests/follow_unfollow", sender: current_user, recipient: @recipient %>';
+});

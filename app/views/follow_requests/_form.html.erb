@@ -1,7 +1,8 @@
-<%= form_with(model: follow_request, local: false, data: { turbo: false }, class: "d-inline-block") do |form| %>
+<%= form_with(model: follow_request, local: false, data: { turbo: false }, class: "d-inline-block follow-form") do |form| %>
+
   <%= form.hidden_field :recipient_id, value: recipient.id %>
 
   <div class="actions">
-    <%= form.submit "Follow", class: "btn btn-outline-secondary btn-block" %>
+    <%= form.submit "Follow", class: "btn btn-outline-secondary btn-block follow-button" %>
   </div>
 <% end %>

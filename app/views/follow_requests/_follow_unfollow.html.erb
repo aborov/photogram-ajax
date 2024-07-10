@@ -1,5 +1,5 @@
 <% unless sender == recipient %>
-  <div id="<%= dom_id(recipient) %>_follow">
+  <div class="follow-container" data-user-id="<%= recipient.id %>">
     <% follow_request = sender.sent_follow_requests.find_by(recipient: recipient) %>
 
     <% if follow_request %>
@@ -7,13 +7,13 @@
         <%= button_to "Un-request", follow_request_path(follow_request), 
                     method: :delete,
                     form: { data: { turbo: false } },
-                    class: "btn btn-outline-secondary",
+                    class: "btn btn-outline-secondary follow-button",
                     remote: true %>
       <% elsif follow_request.accepted? %>
         <%= button_to "Un-follow", follow_request_path(follow_request),
                     method: :delete,
                     form: { data: { turbo: false } },
-                    class: "btn btn-outline-secondary",
+                    class: "btn btn-outline-secondary follow-button",
                     remote: true %>
       <% end %>
     <% else %>
