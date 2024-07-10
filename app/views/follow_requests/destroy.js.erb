@@ -1,0 +1,1 @@
+document.getElementById("<%= dom_id(@recipient) %>_follow").innerHTML = "<%= j render 'follow_requests/follow_unfollow', sender: current_user, recipient: @recipient %>";
