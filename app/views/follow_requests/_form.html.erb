@@ -1,8 +1,16 @@
-<%= form_with(model: follow_request, local: false, data: { turbo: false }, class: "d-inline-block follow-form") do |form| %>
-
-  <%= form.hidden_field :recipient_id, value: recipient.id %>
-
+<%= form_with(model: follow_request, local: false, class: "d-inline-block") do |form| %>
+  <% if follow_request.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(follow_request.errors.count, "error") %> prohibited this follow_request from being saved:</h2>
+      <ul>
+        <% follow_request.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+    <%= form.hidden_field :recipient_id %>
   <div class="actions">
-    <%= form.submit "Follow", class: "btn btn-outline-secondary btn-block follow-button" %>
+    <%= form.submit "Follow", class: "btn btn-outline-secondary btn-block" %>
   </div>
 <% end %>

@@ -1,23 +1,25 @@
 <% unless sender == recipient %>
-  <div class="follow-container" data-user-id="<%= recipient.id %>">
-    <% follow_request = sender.sent_follow_requests.find_by(recipient: recipient) %>
+  <div class="<%= dom_id(sender)%>_<%= dom_id(recipient)%>_follow_unfollow">
+    <% follow_request = current_user.sent_follow_requests.find_by(recipient: recipient) %>
 
     <% if follow_request %>
       <% if follow_request.pending? %>
-        <%= button_to "Un-request", follow_request_path(follow_request), 
+        <%= link_to follow_request, 
                     method: :delete,
-                    form: { data: { turbo: false } },
-                    class: "btn btn-outline-secondary follow-button",
-                    remote: true %>
+                    class: "btn btn-outline-secondary",
+                    remote: true do %>
+          Un-request
+        <% end %>
       <% elsif follow_request.accepted? %>
-        <%= button_to "Un-follow", follow_request_path(follow_request),
+        <%= link_to follow_request,
                     method: :delete,
-                    form: { data: { turbo: false } },
-                    class: "btn btn-outline-secondary follow-button",
-                    remote: true %>
+                    class: "btn btn-outline-secondary",
+                    remote: true do %>
+          Un-follow
+        <% end %>
       <% end %>
     <% else %>
-      <%= render "follow_requests/form", follow_request: FollowRequest.new, recipient: recipient %>
+      <%= render "follow_requests/form", follow_request: recipient.received_follow_requests.build %>
     <% end %>
   </div>
 <% end %>

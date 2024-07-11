@@ -23,8 +23,6 @@ class FollowRequestsController < ApplicationController
   def create
     @follow_request = FollowRequest.new(follow_request_params)
     @follow_request.sender = current_user
-    @recipient = User.find(params[:follow_request][:recipient_id])
-
     respond_to do |format|
       if @follow_request.save
         format.html { redirect_back fallback_location: root_url, notice: "Follow request was successfully created." }
@@ -56,7 +54,6 @@ class FollowRequestsController < ApplicationController
   def destroy
     @recipient = @follow_request.recipient
     @follow_request.destroy
-    
     respond_to do |format|
       format.html { redirect_back fallback_location: root_url, notice: "Follow request was successfully destroyed." }
       format.json { head :no_content }
@@ -65,13 +62,14 @@ class FollowRequestsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_follow_request
-      @follow_request = FollowRequest.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def follow_request_params
-      params.require(:follow_request).permit(:recipient_id, :sender_id, :status)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_follow_request
+    @follow_request = FollowRequest.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def follow_request_params
+    params.require(:follow_request).permit(:recipient_id, :sender_id, :status)
+  end
 end

@@ -1,3 +1,1 @@
-document.querySelectorAll('.follow-container[data-user-id="<%= @recipient.id %>"]').forEach(function(container) {
-  container.outerHTML = '<%= j render "follow_requests/follow_unfollow", sender: current_user, recipient: @recipient %>';
-});
+$(".<%= dom_id(@follow_request.sender) %>_<%= dom_id(@follow_request.recipient) %>_follow_unfollow").replaceWith("<%= j(render "follow_requests/follow_unfollow", sender: @follow_request.sender, recipient: @follow_request.recipient) %>");
