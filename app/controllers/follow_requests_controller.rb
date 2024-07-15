@@ -23,14 +23,15 @@ class FollowRequestsController < ApplicationController
   def create
     @follow_request = FollowRequest.new(follow_request_params)
     @follow_request.sender = current_user
-
     respond_to do |format|
       if @follow_request.save
         format.html { redirect_back fallback_location: root_url, notice: "Follow request was successfully created." }
         format.json { render :show, status: :created, location: @follow_request }
+        format.js
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @follow_request.errors, status: :unprocessable_entity }
+        format.js { render js: "alert('Failed to follow.');" }
       end
     end
   end
@@ -41,6 +42,7 @@ class FollowRequestsController < ApplicationController
       if @follow_request.update(follow_request_params)
         format.html { redirect_back fallback_location: root_url, notice: "Follow request was successfully updated." }
         format.json { render :show, status: :ok, location: @follow_request }
+        format.js
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @follow_request.errors, status: :unprocessable_entity }
@@ -50,21 +52,24 @@ class FollowRequestsController < ApplicationController
 
   # DELETE /follow_requests/1 or /follow_requests/1.json
   def destroy
+    @recipient = @follow_request.recipient
     @follow_request.destroy
     respond_to do |format|
       format.html { redirect_back fallback_location: root_url, notice: "Follow request was successfully destroyed." }
       format.json { head :no_content }
+      format.js
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_follow_request
-      @follow_request = FollowRequest.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def follow_request_params
-      params.require(:follow_request).permit(:recipient_id, :sender_id, :status)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_follow_request
+    @follow_request = FollowRequest.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def follow_request_params
+    params.require(:follow_request).permit(:recipient_id, :sender_id, :status)
+  end
 end
